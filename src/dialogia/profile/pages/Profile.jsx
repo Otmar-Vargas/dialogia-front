@@ -757,7 +757,7 @@ useEffect(() => {
             mr={3}
           >
             <Text fontSize="3xl" fontWeight="bold">
-              {Math.round(currentUser.activity.score)}
+              {Math.round(currentUser.activity?.score || 0)}
             </Text>
           </Box>
           <Text fontSize="3xl" fontWeight="700" color="gray.600">XP</Text>
