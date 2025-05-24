@@ -65,7 +65,7 @@ const UserProfile = ({ currentUser, refreshUser }) => {
       });
       
       if (!respuesta.ok) {
-        // cosole.error('Error al actualizar el usuario', respuesta);
+        // console.error('Error al actualizar el usuario', respuesta);
         throw new Error('Error al actualizar el usuario');
       }
       

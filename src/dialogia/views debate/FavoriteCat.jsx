@@ -84,7 +84,7 @@ const [userRanking, setUserRanking] = useState([]);
         });
         setCategoriesMap(map);
       })
-      .catch(// cosole.error);
+      .catch(// console.error);
   }, []);
 
 
@@ -95,7 +95,7 @@ const [userRanking, setUserRanking] = useState([]);
         setUserRanking(res.data);
       })
       .catch((err) => {
-        // cosole.error("Error fetching ranking:", err);
+        // console.error("Error fetching ranking:", err);
       });
   }, []);
 
@@ -116,7 +116,7 @@ const [userRanking, setUserRanking] = useState([]);
         );
         setDebates(data);
       } catch (e) {
-        // cosole.error(e);
+        // console.error(e);
         setError("Error al cargar debates recomendados");
       } finally {
         setLoading(false);

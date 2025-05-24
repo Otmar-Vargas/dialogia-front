@@ -34,7 +34,7 @@ const DeleteAccount = ({ auth }) => {
         duration: 2000,
       });
     } catch (error) {
-      //// cosole.log(error.message);
+      //// console.log(error.message);
       toaster.create({
         title: "Error al eliminar cuenta",
         description: error.message,

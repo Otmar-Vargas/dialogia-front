@@ -128,7 +128,7 @@ const BADGE_DEFINITIONS = [
 const commentsWithDebate = all
   .flatMap(d => {
     return (d.comments || []).map(c => {
-      // cosole.log(`Debate ${d.idDebate} → comment ${c.idComment}:`, c);
+      // console.log(`Debate ${d.idDebate} → comment ${c.idComment}:`, c);
       return {
         ...c,
         debateId: d.idDebate
@@ -137,19 +137,19 @@ const commentsWithDebate = all
   })
   .filter(c => c.username === currentUser.username);
 
-// Aquí añades el // cosole.log para cada comentario ya filtrado:
+// Aquí añades el // console.log para cada comentario ya filtrado:
 commentsWithDebate.forEach(c => {
-  // cosole.log(`Filtered comment ${c.idComment} from debate ${c.debateId}:`, c);
+  // console.log(`Filtered comment ${c.idComment} from debate ${c.debateId}:`, c);
 });
 
 setComments(commentsWithDebate);
 
       // para depurar:
-      // cosole.log('Primer debate:', all[0]);
-      // cosole.log('UserDebates:', userDs);
-      // cosole.log('CommentsWithDebate:', commentsWithDebate);
+      // console.log('Primer debate:', all[0]);
+      // console.log('UserDebates:', userDs);
+      // console.log('CommentsWithDebate:', commentsWithDebate);
     } catch (err) {
-      // cosole.error(err);
+      // console.error(err);
       toaster.create({ description: err.message, type: 'error' });
     }
   };
@@ -212,7 +212,7 @@ setComments(commentsWithDebate);
         const unlocked = (currentUser.insignias || []).map(ins => ins.badgeId);
         setUserUnlockedBadges(unlocked);
       } catch (error) {
-        // cosole.error("Error:", error);
+        // console.error("Error:", error);
         toaster.create({
           description: "Error al cargar datos del perfil",
           type: "error",
@@ -247,7 +247,7 @@ useEffect(() => {
         })
       setNotifications(notifs);
     } catch (err) {
-      // cosole.error('Error cargando notificaciones:', err);
+      // console.error('Error cargando notificaciones:', err);
       toaster.create({ description: err.message, type: 'error' });
     }
   };
@@ -295,7 +295,7 @@ useEffect(() => {
         type: "success",
       });
     } catch (error) {
-      // cosole.error("Error:", error);
+      // console.error("Error:", error);
       toaster.create({
         description: "No se pudieron guardar las preferencias",
         type: "error",
@@ -331,11 +331,11 @@ useEffect(() => {
   
       toaster.create({ description: 'Insignia aplicada correctamente', type: 'success' });
       await refreshUser();
-      // cosole.log("Insignia actual: ", currentUser.title);
+      // console.log("Insignia actual: ", currentUser.title);
       // Opcional: actualizar tu estado local para reflejar el nuevo title
       // p.ej. setUserTitle(selected.badgeName);
     } catch (err) {
-      // cosole.error(err);
+      // console.error(err);
       toaster.create({ description: err.message, type: 'error' });
     } finally {
       setIsSubmitting(false);

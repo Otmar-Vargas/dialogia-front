@@ -36,7 +36,7 @@ const CategoryView = ({category, sortType, search, quantity }) => {
       
       } catch (err) {
         setError("Error al cargar los debates");
-        // cosole.error(err);
+        // console.error(err);
         toaster.create({
           title: "Error",
           description: "No se pudieron cargar los debates",

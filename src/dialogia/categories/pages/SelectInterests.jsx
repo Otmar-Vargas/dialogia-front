@@ -30,7 +30,7 @@ const SelectInterests = () => {
         const data = await response.json();
         setCategories(data);
       } catch (error) {
-        // cosole.error("Error:", error);
+        // console.error("Error:", error);
         toaster.create({
           description: "No se pudieron cargar las categorías",
           type: "error",
@@ -98,7 +98,7 @@ const SelectInterests = () => {
       navigate("/login");
       window.location.reload();
     } catch (error) {
-      // cosole.error("Error:", error);
+      // console.error("Error:", error);
       toaster.create({
         description: "No se pudieron guardar los intereses",
         type: "error",

@@ -38,7 +38,7 @@ const RankingGlobal = ({ categories }) => {
         setLoading(false);
       })
       .catch((err) => {
-        // cosole.error("Error fetching ranking:", err);
+        // console.error("Error fetching ranking:", err);
         setLoading(false);
       });
   }, []);

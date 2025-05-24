@@ -26,9 +26,9 @@ const Debate = () => {
         
         const response = await axios.post(`${import.meta.env.VITE_API_URL}/debates/${id}?censored=${censorship}`,
           { username: currentUser.username });
-        // cosole.log(response.data)
+        // console.log(response.data)
         setDebate(response.data);
-        // cosole.log(response.data.bestArgument);
+        // console.log(response.data.bestArgument);
         
         if (response.data.followers && currentUser) {
          const isFollowing = response.data.followers.includes(currentUser.username);
@@ -47,7 +47,7 @@ const Debate = () => {
           setFollowing(isFollowing);
         }
       } catch (error) {
-        // cosole.error('Error fetching debate:', error);
+        // console.error('Error fetching debate:', error);
       } finally {
         setLoading(false);
       }
@@ -141,7 +141,7 @@ const Debate = () => {
       setFollowing(prev => !prev)
 
     } catch (error) {
-      // cosole.error('Error al (de)seguir debate:', error)
+      // console.error('Error al (de)seguir debate:', error)
       toaster.create({
         title: 'Error al actualizar seguimiento',
         description: error.message,

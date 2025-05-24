@@ -81,7 +81,7 @@ const RegisterInLogin = () => {
             toaster.success("Registro exitoso");
             navigate("/home"); // Redirige a home directamente
         } catch (error) {
-            // cosole.error("Error en registro:", error);
+            // console.error("Error en registro:", error);
             toaster.error(error.message || "Error durante el registro");
         }
     };

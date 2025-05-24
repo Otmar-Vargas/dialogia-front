@@ -21,7 +21,7 @@ const CategoriesBar = () => {
         const sortedData = [...data].sort((a, b) => a.order - b.order);
         setCategories(sortedData);
       } catch (error) {
-        // cosole.error("Error fetching categories:", error);
+        // console.error("Error fetching categories:", error);
       }
     };
     fetchCategories();

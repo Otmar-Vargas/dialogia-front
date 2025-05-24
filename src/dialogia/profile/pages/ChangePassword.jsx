@@ -26,7 +26,7 @@ const ChangePassword = () => {
         await signOut(auth);
         navigate('/recover');
         } catch (error) {
-        // cosole.error(error);
+        // console.error(error);
         }
     };
   const handleChangePassword = async () => {

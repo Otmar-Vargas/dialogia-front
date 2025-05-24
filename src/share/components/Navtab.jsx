@@ -83,7 +83,7 @@ const NavTab = () => {
       
       
     } catch (error) {
-      // cosole.error(error);
+      // console.error(error);
     }
     finally {
       await navigate('/');
@@ -154,7 +154,7 @@ const NavTab = () => {
         notifications.forEach(n => {
           if (!n.view) {
             const notifRef = doc(db, 'notifications', n.id);
-            updateDoc(notifRef, { view: true }).catch(// cosole.error);
+            updateDoc(notifRef, { view: true }).catch()// console.error);
           }
         });
       }

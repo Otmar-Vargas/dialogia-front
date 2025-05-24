@@ -57,7 +57,7 @@ const RecoverReset = () => {
         await verifyPasswordResetCode(auth, oobCode);
         setIsCodeValid(true);
       } catch (e) {
-        // cosole.log(e);
+        // console.log(e);
         toaster.create({
           title: "Error",
           description: "El enlace de restablecimiento no es válido o ha expirado",

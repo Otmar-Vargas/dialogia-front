@@ -111,7 +111,7 @@ export default function ReplyCommentForm({
         finalImage = fileData.url;
         setImage(finalImage);
       } catch (error) {
-        // cosole.error("Error al subir:", error);
+        // console.error("Error al subir:", error);
       }
     }
 
@@ -126,7 +126,7 @@ export default function ReplyCommentForm({
     };
 
 
-    // cosole.debug("DEBUG: Payload para respuesta:", payload);
+    // console.debug("DEBUG: Payload para respuesta:", payload);
 
 
     try {
