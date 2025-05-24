@@ -84,7 +84,7 @@ const [userRanking, setUserRanking] = useState([]);
         });
         setCategoriesMap(map);
       })
-      .catch(// console.error);
+      .catch()
   }, []);
 
 
