@@ -20,7 +20,7 @@ const Login = () => {
     try {
       const userCredential = await login(email, password);
       const user = userCredential.user;
-      console.log("Usuario autenticado:", user);
+      // cosole.log("Usuario autenticado:", user);
 
       await fetch(`${import.meta.env.VITE_API_URL}/user/${user.uid}/badges`, {
         method: 'POST',
@@ -41,7 +41,7 @@ const Login = () => {
       await loginWithGoogle();
       navigate("/home");
     } catch (error) {
-      console.error(error);
+      // cosole.error(error);
       toaster.create({
         title: "Error",
         description: "Error al iniciar sesión con Google",

@@ -153,7 +153,7 @@ const CreateDebateDialog = ({ triggerButton, categoryId = null }) => {
         finalImage = fileData.url; // Usamos una variable, no el estado
         setImage(finalImage); // Actualizamos el estado (pero no lo esperamos)
       } catch (error) {
-        console.error('Error al subir:', error);
+        // cosole.error('Error al subir:', error);
       }
     }
 
@@ -166,7 +166,7 @@ const CreateDebateDialog = ({ triggerButton, categoryId = null }) => {
         refs: references,
         image: finalImage,
       };
-      console.debug("DEBUG: Payload a enviar al API:", debateData);
+      // cosole.debug("DEBUG: Payload a enviar al API:", debateData);
 
       const response = await fetch(`${import.meta.env.VITE_API_URL}/debates`, {
         method: "POST",

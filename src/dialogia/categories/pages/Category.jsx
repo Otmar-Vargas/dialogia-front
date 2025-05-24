@@ -39,10 +39,10 @@ const Category = () => {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/category/${id}`);
       if (!response.ok) throw new Error("Error al cargar la categoría");
       const data = await response.json();
-      console.log(searchQuery)
+      // cosole.log(searchQuery)
       setCategory(data);
     } catch (error) {
-      console.error(error);
+      // cosole.error(error);
     } finally {
       setLoading(false);
     }

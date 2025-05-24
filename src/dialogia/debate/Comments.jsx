@@ -90,7 +90,7 @@ useEffect(() => {
     );
 
     setComments(updatedComments);
-    console.log('render, comments state:', updatedComments.map(c => c.idComment));
+    // cosole.log('render, comments state:', updatedComments.map(c => c.idComment));
 
     if (username) {
       const inFavor = debate.peopleInFavor.includes(username);
@@ -109,7 +109,7 @@ useEffect(() => {
     setLikesState(initialLikesState);
     setLoading(false);
   }, err => {
-    console.error(err);
+    // cosole.error(err);
     setError(err.message);
     setLoading(false);
   });
@@ -140,7 +140,7 @@ useEffect(() => {
   };
 
 
-console.log(comments);
+// cosole.log(comments);
 
 
 const handleLike = async idComment => {
@@ -222,7 +222,7 @@ const handleLike = async idComment => {
 
   } catch (err) {
     // 5) Rollback en caso de fallo
-    console.error('Error al actualizar like:', err);
+    // cosole.error('Error al actualizar like:', err);
     toaster.create({
       title: 'Error al actualizar like',
       description: err.message,
@@ -320,7 +320,7 @@ const handleDislike = async idComment => {
 
   } catch (err) {
     // 5) Rollback en caso de fallo
-    console.error('Error al actualizar dislike:', err);
+    // cosole.error('Error al actualizar dislike:', err);
     toaster.create({
       title: 'Error al actualizar dislike',
       description: err.message,

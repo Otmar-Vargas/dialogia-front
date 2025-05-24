@@ -68,7 +68,7 @@ const Register = () => {
 
   
     } catch (error) {
-      console.error(error);
+      // cosole.error(error);
       toaster.create({
         title: "Error",
         description: "Error al iniciar sesión con Google",

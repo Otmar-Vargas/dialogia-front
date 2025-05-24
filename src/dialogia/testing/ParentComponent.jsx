@@ -8,10 +8,10 @@
 //   const handleSubmit = async () => {
 //     try {
 //       const fileData = await uploaderRef.current.uploadFile();
-//       console.log('Archivo subido:', fileData);
+//       // cosole.log('Archivo subido:', fileData);
 //       // Aquí puedes guardar fileData en tu base de datos
 //     } catch (error) {
-//       console.error('Error al subir:', error);
+//       // cosole.error('Error al subir:', error);
 //     }
 //   };
 

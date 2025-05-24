@@ -36,7 +36,7 @@ const DebatesSearch = ({ search }) => {
         setDebates(data);
         setCurrentPage(1); // reset
       }catch (err) {
-        console.error(err);
+        // cosole.error(err);
         setError("Error al cargar los debates");
       } finally {
         setLoading(false);

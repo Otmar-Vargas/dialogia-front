@@ -26,7 +26,7 @@ const RecommendView = ( { interests, censored } ) => {
         setDebates(response.data);
       } catch (err) {
         setError("Error al cargar los debates");
-        console.error(err);
+        // cosole.error(err);
       } finally {
         setLoading(false);
       }

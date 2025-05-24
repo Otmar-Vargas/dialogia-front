@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem("username", userData.username || '');
       localStorage.setItem("censorship", userData.censorship ?? true);
     } catch (err) {
-      console.error("Error refreshing user:", err);
+      // // cosole.error("Error refreshing user:", err);
       setError("Error al cargar datos del usuario");
     } finally {
       setLoading(false);
@@ -78,7 +78,7 @@ export const AuthProvider = ({ children }) => {
         unsubscribeRef.current = null;
       }
     } catch (err) {
-      console.error("Error al cerrar sesión:", err);
+      // // cosole.error("Error al cerrar sesión:", err);
       setError("Error al cerrar sesión");
     }
   }, []);

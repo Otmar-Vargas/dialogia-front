@@ -73,7 +73,7 @@ const ImageUploader = forwardRef(({ folderPath = 'uploads' }, ref) => {
 
       return !isUnsafe;
     } catch (error) {
-      console.error('Error verificando imagen:', error);
+      // cosole.error('Error verificando imagen:', error);
       toaster.create({
         title: 'Advertencia',
         description: 'No se pudo verificar la seguridad de la imagen. Sube solo contenido apropiado.',

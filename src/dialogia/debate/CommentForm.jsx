@@ -106,7 +106,7 @@ export default function CommentForm({
         finalImage = fileData.url; // Usamos una variable, no el estado
         setImage(finalImage); // Actualizamos el estado (pero no lo esperamos)
       } catch (error) {
-        console.error('Error al subir:', error);
+        // cosole.error('Error al subir:', error);
       }
     }
 
@@ -123,7 +123,7 @@ export default function CommentForm({
     };
 
 
-    console.debug("DEBUG: Payload a enviar al API:", payload);
+    // cosole.debug("DEBUG: Payload a enviar al API:", payload);
 
 
     try {
