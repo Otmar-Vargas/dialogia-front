@@ -90,7 +90,7 @@ const [userRanking, setUserRanking] = useState([]);
 
  useEffect(() => {
     axios
-      .get("http://localhost:3020/api/v1/user/ranking")
+      .get(`${import.meta.env.VITE_API_URL}/user/ranking`)
       .then((res) => {
         setUserRanking(res.data);
       })
