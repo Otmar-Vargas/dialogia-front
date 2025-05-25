@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef,useEffect } from "react";
 import { useParams } from "react-router-dom";
 import {
   Flex,
@@ -31,13 +31,22 @@ export default function CommentForm({
   const [image, setImage] = useState("");  
   const uploaderRef = useRef();
   const [isLoading, setIsLoading] = useState(false);
-
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const getUsername = () => {
     return localStorage.getItem("username") || "usuario-ejemplo";
   };
 
-
+  useEffect(() => {
+      if (isVisible) {
+        document.body.style.overflow = 'hidden'; // Bloquea scroll de la página
+      } else {
+        document.body.style.overflow = 'auto'; // Restaura scroll al cerrar
+      }
+      return () => {
+        document.body.style.overflow = 'auto'; // Limpieza al desmontar
+      };
+    }, [isVisible]);
   if (!isVisible) return null;
 
 
@@ -87,6 +96,9 @@ export default function CommentForm({
 
 
   const handlePublish = async () => {
+    if (isSubmitting) return; // Evita múltiples ejecuciones
+  
+  setIsSubmitting(true); 
     if (!argument.trim()) {
       toaster.create({
         title: "El comentario no puede estar vacío",
@@ -179,6 +191,7 @@ export default function CommentForm({
         type: "error",
       });
     } finally {
+      setIsSubmitting(false);
       setIsLoading(false);
     }
   };
@@ -270,7 +283,8 @@ export default function CommentForm({
           <Button
             colorScheme="blue"
             onClick={handlePublish}
-            isLoading={isLoading}
+             isLoading={isSubmitting}
+            isDisabled={isSubmitting}
           >
             Publicar
           </Button>

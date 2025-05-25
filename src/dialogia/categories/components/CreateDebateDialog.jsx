@@ -33,7 +33,7 @@ const CreateDebateDialog = ({ triggerButton, categoryId = null }) => {
   const [isLoading, setIsLoading] = useState(false);
   const uploaderRef = useRef();
   const [isOpen, setIsOpen] = useState(false);
-  
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
     
   // Obtener categorías desde la API
@@ -113,6 +113,8 @@ const CreateDebateDialog = ({ triggerButton, categoryId = null }) => {
   };
 
   const handleSubmit = async () => {
+    if (isSubmitting) return; // Evita múltiples ejecuciones
+  setIsSubmitting(true);
     if (!title.trim()) {
       toaster.create({
         title: "Error",
@@ -208,6 +210,7 @@ const CreateDebateDialog = ({ triggerButton, categoryId = null }) => {
         type: "error",
       });
     } finally {
+      setIsSubmitting(false);
       setIsLoading(false);
     }
   };
@@ -362,7 +365,8 @@ const CreateDebateDialog = ({ triggerButton, categoryId = null }) => {
               <Button
                 colorScheme="blue"
                 onClick={handleSubmit}
-                isLoading={isLoading}
+                isLoading={isSubmitting}
+      isDisabled={isSubmitting}
               >
                 Publicar debate
               </Button>

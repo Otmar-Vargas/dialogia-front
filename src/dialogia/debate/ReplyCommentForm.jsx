@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef,useEffect } from "react";
 import { useParams } from "react-router-dom";
 import {
   Flex,
@@ -35,12 +35,21 @@ export default function ReplyCommentForm({
   const [image, setImage] = useState("");
   const uploaderRef = useRef();
   const [isLoading, setIsLoading] = useState(false);
-
-
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
   const getUsername = () => {
     return localStorage.getItem("username") || "usuario-ejemplo";
   };
-
+useEffect(() => {
+    if (isVisible) {
+      document.body.style.overflow = 'hidden'; // Bloquea scroll de la página
+    } else {
+      document.body.style.overflow = 'auto'; // Restaura scroll al cerrar
+    }
+    return () => {
+      document.body.style.overflow = 'auto'; // Limpieza al desmontar
+    };
+  }, [isVisible]);
 
   if (!isVisible || !parentComment) return null;
 
@@ -91,6 +100,8 @@ export default function ReplyCommentForm({
 
 
   const handlePublish = async () => {
+     if (isSubmitting) return;
+     setIsSubmitting(true);
     if (!argument.trim()) {
       toaster.create({
         title: "El comentario no puede estar vacío",
@@ -152,7 +163,7 @@ export default function ReplyCommentForm({
         }
       }
 
-
+      
       const newReply = await response.json();
 
 
@@ -180,178 +191,191 @@ export default function ReplyCommentForm({
         type: "error",
       });
     } finally {
+      setIsSubmitting(false);
       setIsLoading(false);
     }
   };
+  
 
-
-  return (
-    <Flex
-      position="fixed"
-      top="0"
-      left="0"
-      width="100vw"
-      height="100vh"
-      bg="rgba(0,0,0,0.4)"
-      justifyContent="center"
-      alignItems="center"
-      zIndex="1000"
+return (
+  <Flex
+    position="fixed"
+    top="0"
+    left="0"
+    width="100vw"
+    height="100vh"
+    bg="rgba(0,0,0,0.4)"
+    justifyContent="center"
+    alignItems="center"
+    zIndex="1000"
+    overflow="hidden" // Bloquea scroll en el fondo
+  >
+    <Box
+      bg={bgColor}
+      color={textColor}
+      p={6}
+      borderRadius="md"
+      maxW="600px"
+      width="90%"
+      maxH="90vh" // Limita altura máxima
+      shadow="lg"
+      display="flex"
+      flexDirection="column"
+      overflowY="auto" // Scroll interno para todo el contenido
     >
+      {/* Encabezado */}
+      <Text fontSize="2xl" mb={4} fontWeight="bold">
+        Responder comentario
+      </Text>
+
+      {/* Comentario padre */}
       <Box
-        bg={bgColor}
-        color={textColor}
-        p={6}
+        bg="gray.100"
+        p={4}
         borderRadius="md"
-        maxW="600px"
-        width="90%"
-        shadow="lg"
+        mb={4}
+        borderLeft="4px solid"
+        borderColor={parentComment.position ? "blue.500" : "red.500"}
       >
-        <Text fontSize="2xl" mb={4} fontWeight="bold">
-          Responder comentario
-        </Text>
-
-
-        {/* Mostrar el comentario padre completo */}
-        <Box
-          bg="gray.100"
-          p={4}
-          borderRadius="md"
-          mb={4}
-          borderLeft="4px solid"
-          borderColor={parentComment.position ? "blue.500" : "red.500"}
-        >
-          <Flex align="flex-start" flexWrap="wrap">
-            <Avatar.Root
-              style={{ borderRadius: "9999px", overflow: "hidden" }}
-              mr={4}
-              size="lg"
-            >
-              <Avatar.Fallback
-                delayms={600}
-              >{`A${parentComment.user?.id}`}</Avatar.Fallback>
-              <Avatar.Image
-                src={`/avatar_${parentComment.user?.avatarId || "1"}.jpg`}
-                alt={`Avatar ${parentComment.user?.id}`}
-                objectFit="cover"
-              />
-            </Avatar.Root>
-
-
-            <Box flex="1" minW="200px">
-              <Flex align="center" flexWrap="wrap">
-                <Text fontWeight="bold" mr={2} fontSize="sm">
-                  {parentComment.username}
-                </Text>
-                <Text fontSize="xs" color="gray.500" fontWeight="bold">
-                  {new Date(parentComment.datareg).toLocaleDateString("es-ES")}{" "}
-                  {new Date(parentComment.datareg)
-                    .toLocaleTimeString("en-US", {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                      hour12: true,
-                    })
-                    .toLowerCase()}
-                </Text>
-              </Flex>
-              <Text mt={1} color="gray.700" fontSize="sm">
-                {parentComment.argument}
-              </Text>
-              {parentComment.image && (
-                <Image src={parentComment.image} mt={2} maxH="150px" />
-              )}
-              {parentComment.refs && parentComment.refs.length > 0 && (
-                <Box mt={2}>
-                  <Text fontSize="xs" fontWeight="semibold">
-                    Referencias:
-                  </Text>
-                  <VStack align="start" spacing={1} mt={1}>
-                    {parentComment.refs.map((r, i) => (
-                      <Link
-                        key={i}
-                        href={r}
-                        fontSize="xs"
-                        isExternal
-                        _hover={{
-                          textDecoration: "underline",
-                          color: "blue.500",
-                        }}
-                      >
-                        • {r}
-                      </Link>
-                    ))}
-                  </VStack>
-                </Box>
-              )}
-            </Box>
-          </Flex>
-        </Box>
-
-
-        <VStack spacing={4} align="stretch">
-          <Box>
-            <Text fontWeight="bold">Tu respuesta</Text>
-            <Input
-              placeholder="Escribe tu respuesta..."
-              value={argument}
-              onChange={handleArgumentChange}
+        <Flex align="flex-start" flexWrap="wrap">
+          <Avatar.Root
+            style={{ borderRadius: "9999px", overflow: "hidden" }}
+            mr={4}
+            size="lg"
+          >
+            <Avatar.Fallback delayMs={600}>{`A${parentComment.user?.id}`}</Avatar.Fallback>
+            <Avatar.Image
+              src={`/avatar_${parentComment.user?.avatarId || "1"}.jpg`}
+              alt={`Avatar ${parentComment.user?.id}`}
+              objectFit="cover"
             />
-          </Box>
+          </Avatar.Root>
 
-
-          {/* Imagen */}
-          <Box fontWeight={"bold"}>
-            Imagen (opcional)
-            <ImageUploader ref={uploaderRef} folderPath="debate" />
-          </Box>
-
-
-          <Box>
-            <Text fontWeight="bold">Referencias (máx. {MAX_REFERENCES})</Text>
-            <HStack spacing={2}>
-              <Input
-                placeholder={`Agregar referencia (máx. ${REFERENCE_MAX_LENGTH} caracteres)`}
-                value={newRef}
-                onChange={handleNewRefChange}
-                onKeyPress={(e) => {
-                  if (e.key === "Enter") handleAddRef();
-                }}
+          <Box flex="1" minW="200px">
+            <Flex align="center" flexWrap="wrap">
+              <Text fontWeight="bold" mr={2} fontSize="sm">
+                {parentComment.username}
+              </Text>
+              <Text fontSize="xs" color="gray.500" fontWeight="bold">
+                {new Date(parentComment.datareg).toLocaleDateString("es-ES")}{" "}
+                {new Date(parentComment.datareg)
+                  .toLocaleTimeString("en-US", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: true,
+                  })
+                  .toLowerCase()}
+              </Text>
+            </Flex>
+            <Text mt={1} color="gray.700" fontSize="sm">
+              {parentComment.argument}
+            </Text>
+            {parentComment.image && (
+              <Image 
+                src={parentComment.image} 
+                mt={2} 
+                maxH="150px"
+                objectFit="contain"
               />
-              <Button onClick={handleAddRef}>Agregar</Button>
-            </HStack>
-            {refs.length > 0 && (
-              <Box mt={2} borderWidth="1px" p={2} borderRadius="md">
-                {refs.map((r, idx) => (
-                  <Flex key={idx} justify="space-between" align="center" py={1}>
-                    <Text isTruncated maxW="80%">
-                      {r}
-                    </Text>
-                    <CloseButton
-                      size="sm"
-                      onClick={() => handleRemoveRef(idx)}
-                    />
-                  </Flex>
-                ))}
+            )}
+            {parentComment.refs?.length > 0 && (
+              <Box mt={2}>
+                <Text fontSize="xs" fontWeight="semibold">
+                  Referencias:
+                </Text>
+                <VStack align="start" spacing={1} mt={1}>
+                  {parentComment.refs.map((r, i) => (
+                    <Link
+                      key={i}
+                      href={r}
+                      fontSize="xs"
+                      isExternal
+                      _hover={{
+                        textDecoration: "underline",
+                        color: "blue.500",
+                      }}
+                    >
+                      • {r}
+                    </Link>
+                  ))}
+                </VStack>
               </Box>
             )}
           </Box>
-        </VStack>
-
-
-        <Flex justifyContent="flex-end" gap={3} mt={4}>
-          <Button onClick={onCancel} isDisabled={isLoading}>
-            Cancelar
-          </Button>
-          <Button
-            colorScheme="blue"
-            onClick={handlePublish}
-            isLoading={isLoading}
-          >
-            Publicar respuesta
-          </Button>
         </Flex>
       </Box>
-    </Flex>
-  );
+
+      {/* Formulario */}
+      <VStack spacing={4} align="stretch" flex="1">
+        <Box>
+          <Text fontWeight="bold">Tu respuesta</Text>
+          <Input
+            placeholder="Escribe tu respuesta..."
+            value={argument}
+            onChange={handleArgumentChange}
+            minH="100px"
+          />
+        </Box>
+
+        {/* Imagen */}
+        <Box fontWeight="bold">
+          Imagen (opcional)
+          <ImageUploader ref={uploaderRef} folderPath="debate" />
+        </Box>
+
+        {/* Referencias */}
+        <Box>
+          <Text fontWeight="bold">Referencias (máx. {MAX_REFERENCES})</Text>
+          <HStack spacing={2}>
+            <Input
+              placeholder={`Agregar referencia (máx. ${REFERENCE_MAX_LENGTH} caracteres)`}
+              value={newRef}
+              onChange={handleNewRefChange}
+              onKeyPress={(e) => e.key === "Enter" && handleAddRef()}
+            />
+            <Button onClick={handleAddRef}>Agregar</Button>
+          </HStack>
+          {refs.length > 0 && (
+            <Box mt={2} borderWidth="1px" p={2} borderRadius="md">
+              {refs.map((r, idx) => (
+                <Flex key={idx} justify="space-between" align="center" py={1}>
+                  <Text isTruncated maxW="80%">
+                    {r}
+                  </Text>
+                  <CloseButton
+                    size="sm"
+                    onClick={() => handleRemoveRef(idx)}
+                  />
+                </Flex>
+              ))}
+            </Box>
+          )}
+        </Box>
+      
+
+      {/* Botones (posición sticky para mejor visibilidad) */}
+      <Flex
+        justifyContent="flex-end"
+        gap={3}
+        mt={4}
+        
+      >
+        <Button onClick={onCancel} isDisabled={isLoading}>
+          Cancelar
+        </Button>
+        <Button
+          colorScheme="blue"
+          onClick={handlePublish}
+          isLoading={isSubmitting}
+          isDisabled={isSubmitting}
+        >
+          Publicar respuesta
+        </Button>
+      </Flex>
+      </VStack>
+    </Box>
+  </Flex>
+);
 }
 
 

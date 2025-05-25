@@ -36,9 +36,19 @@ export default function Comments({censored}) {
 
 
   const handleReplyClick = (comment) => {
-    setSelectedComment(comment);
-    setShowReplyForm(true);
-  };
+  if (userPosition === null) {
+    toaster.create({
+      title: 'Acción requerida',
+      description: 'No puedes responder un comentario hasta seleccionar una postura en el debate',
+      status: 'warning',
+      duration: 3000
+    });
+    return;
+  }
+  
+  setSelectedComment(comment);
+  setShowReplyForm(true);
+};
 useEffect(() => {
   const debateRef = doc(db, 'debates', id);
 
