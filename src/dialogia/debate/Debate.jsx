@@ -281,7 +281,7 @@ const Debate = () => {
                 {debate?.username}
               </Text>
               <Text fontSize="xs" color="#727272" fontWeight="bold">
-                ★ {debate.user?.title || "Sin título"}
+                ★ {debate.user?.title || "Novato"}
               </Text>
             </Box>
           </Flex>

@@ -114,7 +114,7 @@ const BADGE_DEFINITIONS = [
 
   const fetchAllDebates = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/debates`);
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/debates?censored=${currentUser.censorship}`);
       if (!res.ok) throw new Error('No pude cargar los debates');
       const all = await res.json();
 
@@ -576,117 +576,156 @@ useEffect(() => {
         '&::-webkit-scrollbar-thumb': { bg: 'gray.300', borderRadius: '3px' }
       }}
     >
-            {activityTab === 'debates' && userDebates.map((debate, idx) => (
+{activityTab === 'debates' && (
+  <Box>
+    {(() => {
+      // 1) Si no hay debates del usuario
+      if (userDebates.length === 0) {
+        return (
+          <Text fontSize="sm" color="gray.500">
+            No hay debates
+          </Text>
+        );
+      }
+      // 2) Si hay, los mapeamos igual que antes
+      return userDebates.map((debate, idx) => (
+        <Box
+          key={debate.idDebate}
+          p={4}
+          _hover={{ bg: 'gray.50' }}
+          border="1px solid"
+          borderColor="gray.200"
+          borderRadius="md"
+          mb={idx < userDebates.length - 1 ? 2 : 0}
+          cursor="pointer"
+          onClick={() => navigate(`/debate/${debate.idDebate}`)}
+        >
+          <Flex align="center" mb={2}>
             <Box
-              key={debate.idDebate}
-              p={4}
-              _hover={{ bg: 'gray.50' }}
+              display="inline-block"
               border="1px solid"
               borderColor="gray.200"
-              borderRadius="md"
-              mb={idx < userDebates.length - 1 ? 2 : 0}
-              cursor="pointer"
-                              onClick={() => navigate(`/debate/${debate.idDebate}`)}
+              px={3}
+              py={1}
+              fontSize="sm"
+              fontWeight="500"
             >
-              <Flex align="center" mb={2}>
-                <Box
-                  display="inline-block"
-                  border="1px solid"
-                  borderColor="gray.200"
-                  px={3}
-                  py={1}
-                  fontSize="sm"
-                  fontWeight="500"
-                >
-                  {debate.category
-                    .toLowerCase()
-                    .split(' ')
-                    .map(w => w[0].toUpperCase() + w.slice(1))
-                    .join(' ')}
-                </Box>
-                <Text fontSize="sm" color="gray.500" ml={3}>
-                  {new Date(debate.datareg).toLocaleDateString('es-ES', {
-                    day: 'numeric',
-                    month: 'long',
-                    year: 'numeric'
-                  })}
-                </Text>
-              </Flex>
-
-              <Heading as="h3" size="md" mb={2}>
-                {debate.nameDebate}
-              </Heading>
-
-              <Text mb={2} color="#A9A9A9" fontSize="md">
-                {debate.argument}
-              </Text>
-
+              {debate.category
+                .toLowerCase()
+                .split(' ')
+                .map(w => w[0].toUpperCase() + w.slice(1))
+                .join(' ')}
             </Box>
-          ))}
+            <Text fontSize="sm" color="gray.500" ml={3}>
+              {new Date(debate.datareg).toLocaleDateString('es-ES', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+              })}
+            </Text>
+          </Flex>
 
-              {activityTab === 'comments' && (
-                        allDebates.flatMap(d =>
-          d.comments
-            .filter(c => c.username === currentUser.username)
-            .map(c => {
-              const parentComment = c.paidComment
-                ? getParentComment(c.paidComment)
-                : null;
-              return (
-                <Box
-                  key={c.idComment}
-                  bg="gray.100"
-                  p={4}
-                  borderRadius="lg"
-                  mb={4}
-                  position="relative"
-                  cursor="pointer"
-                  onClick={() => navigate(`/debate/${d.idDebate}`)}  // Aquí navegamos al debate
-                >
-                  {/* Comentario padre */}
-                  {parentComment && (
-                    <Box
-                      bg="gray.200"
-                      p={2}
-                      borderRadius="md"
-                      mb={3}
-                      borderLeft="4px solid"
-                      borderColor={parentComment.position ? 'blue.500' : 'red.500'}
-                    >
-                      <Text fontSize="sm" fontWeight="bold">@{parentComment.username}</Text>
-                      <Text noOfLines={1}>{parentComment.argument}</Text>
-                      <Text fontSize="xs" color="gray.600">
-                        {new Date(parentComment.datareg).toLocaleDateString('es-ES')}
-                      </Text>
-                      
-                    </Box>
-                  )}
+          <Heading as="h3" size="md" mb={2}>
+            {debate.nameDebate}
+          </Heading>
 
-                  <Flex align="flex-start">
-              <Avatar.Root style={{ width: 60, height: 60, borderRadius: '9999px', overflow: 'hidden' }}>
-                <Avatar.Fallback delayMs={600}>{`A${currentUser?.id}`}</Avatar.Fallback>
-                <Avatar.Image src={`/avatar_${currentUser?.avatarId || "1" }.jpg`} alt={`Avatar ${currentUser?.id}`} />
+          <Text mb={2} color="#A9A9A9" fontSize="md">
+            {debate.argument}
+          </Text>
+        </Box>
+      ));
+    })()}
+  </Box>
+)}
+
+{activityTab === 'comments' && (
+  <Box>
+    {(() => {
+      const userComments = allDebates.flatMap(d =>
+        d.comments
+          .filter(c => c.username === currentUser.username)
+          .map(c => {
+            const parentComment = c.paidComment
+              ? getParentComment(c.paidComment)
+              : null;
+            return { debateId: d.idDebate, comment: c, parent: parentComment };
+          })
+      );
+      return userComments.length === 0 ? (
+        <Text fontSize="sm" color="gray.500">
+          No hay comentarios
+        </Text>
+      ) : (
+        /* 2.b Si hay, los mapeamos exactamente igual que antes */
+        userComments.map(({ debateId, comment: c, parent }) => (
+          <Box
+            key={c.idComment}
+            bg="gray.100"
+            p={4}
+            borderRadius="lg"
+            mb={4}
+            position="relative"
+            cursor="pointer"
+            onClick={() => navigate(`/debate/${debateId}`)}
+          >
+            {/* Comentario padre */}
+            {parent && (
+              <Box
+                bg="gray.200"
+                p={2}
+                borderRadius="md"
+                mb={3}
+                borderLeft="4px solid"
+                borderColor={parent.position ? 'blue.500' : 'red.500'}
+              >
+                <Text fontSize="sm" fontWeight="bold">
+                  @{parent.username}
+                </Text>
+                <Text noOfLines={1}>{parent.argument}</Text>
+                <Text fontSize="xs" color="gray.600">
+                  {new Date(parent.datareg).toLocaleDateString('es-ES')}
+                </Text>
+              </Box>
+            )}
+
+            <Flex align="flex-start">
+              <Avatar.Root
+                style={{
+                  width: 60,
+                  height: 60,
+                  borderRadius: '9999px',
+                  overflow: 'hidden',
+                }}
+              >
+                <Avatar.Fallback delayMs={600}>
+                  {`A${currentUser?.id}`}
+                </Avatar.Fallback>
+                <Avatar.Image
+                  src={`/avatar_${currentUser?.avatarId || '1'}.jpg`}
+                  alt={`Avatar ${currentUser?.id}`}
+                />
               </Avatar.Root>
-                    <Box flex="1" ml={2}>
-                      <Flex align="center" mb={2}>
-                        <Text fontWeight="bold">{c.username}</Text>
-                        <Text fontSize="sm" color="gray.500" ml={2}>
-                          {new Date(c.datareg).toLocaleDateString('es-ES')} {' '}
-                          {new Date(c.datareg).toLocaleTimeString('es-ES', {
-                            hour: '2-digit',
-                            minute: '2-digit'
-                          })}
-                        </Text>
-                      </Flex>
-                      <Text>{c.argument}</Text>
-                      {c.image && <Image src={c.image} mt={2} />}
-                    </Box>
-                  </Flex>
-                </Box>
-              );
-            })
-        )
-      )}
+              <Box flex="1" ml={2}>
+                <Flex align="center" mb={2}>
+                  <Text fontWeight="bold">{c.username}</Text>
+                  <Text fontSize="sm" color="gray.500" ml={2}>
+                    {new Date(c.datareg).toLocaleDateString('es-ES')}{' '}
+                    {new Date(c.datareg).toLocaleTimeString('es-ES', {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })}
+                  </Text>
+                </Flex>
+                <Text>{c.argument}</Text>
+                {c.image && <Image src={c.image} mt={2} />}
+              </Box>
+            </Flex>
+          </Box>
+        ))
+      );
+    })()}
+  </Box>
+)}
 
     {activityTab === 'notifications' && (
       <Box>
@@ -703,15 +742,17 @@ useEffect(() => {
               mb={2}
             >
               <HStack justifyContent="space-between">
-                <Text fontWeight="bold" fontSize="sm">
-                  {n.message.split(' ')[0]}
-                </Text>
+                      <Text fontWeight="bold" fontSize="sm">
+                        {n.message.startsWith('¡Has')
+                          ? '¡Nueva insignia!'
+                          : n.message.split(' ')[0]}
+                      </Text>
                 <Text fontSize="xs" color="gray.500">
                   {n.datareg?.toDate().toLocaleString() ?? ''}
                 </Text>
               </HStack>
               <Text fontSize="sm">
-                {n.message.replace(/^\S+/, '').trim()}
+                {n.message.startsWith('!Has') ? n.message : n.message.replace(/^\S+/, '').trim()}
               </Text>
             </Box>
           ))

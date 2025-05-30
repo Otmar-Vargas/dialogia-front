@@ -103,7 +103,7 @@ const categoriesData = [
 const CategoryCard = ({ category }) => {
   const [isHovered, setIsHovered] = useState(false);
   const navigate = useNavigate();
-
+  const fallbackUrl = 'https://w0.peakpx.com/wallpaper/1022/677/HD-wallpaper-painting-art-religion.jpg';
   const handleClick = () => {
     navigate(`/category/${category.id}`);
   };
@@ -124,6 +124,12 @@ const CategoryCard = ({ category }) => {
       <Image
         src={category.image}
         alt={category.name}
+        onError={e => {
+        // Only switch src once, to avoid infinite loop if fallback also fails
+        if (e.currentTarget.src !== fallbackUrl) {
+          e.currentTarget.src = fallbackUrl;
+        }
+      }}
         width="100%"
         height="100%"
         objectFit="cover" // Stretch the image to fill the container if necessary

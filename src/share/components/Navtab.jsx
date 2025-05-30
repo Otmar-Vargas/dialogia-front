@@ -54,7 +54,7 @@ const NavTab = () => {
   const [blink, setBlink] = useState(false);
   const { currentUser, logout } = useAuth();
   const [showRankingSidebar, setShowRankingSidebar] = useState(false);
-
+  const fallbackUrl = 'https://i.postimg.cc/kgQfxByn/LOGO-NAV-SOLO-1.png';
   // Verificar estado de autenticación
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -179,6 +179,12 @@ const NavTab = () => {
         objectFit="contain" 
         cursor="pointer"
         onClick={() => navigate(isLoggedIn ? '/home' : '/')}
+        onError={e => {
+        // Only switch src once, to avoid infinite loop if fallback also fails
+        if (e.currentTarget.src !== fallbackUrl) {
+          e.currentTarget.src = fallbackUrl;
+        }
+      }}
       />
 
       {/* Desktop tabs */}
@@ -378,14 +384,18 @@ const NavTab = () => {
                   onClick={() => handleNotificationClick(n.link)} 
                 >
                   <HStack justifyContent="space-between">
-                    <Text fontWeight="bold" fontSize="sm">{n.message.split(' ')[0]}</Text>
+                      <Text fontWeight="bold" fontSize="sm">
+                        {n.message.startsWith('¡Has')
+                          ? '¡Nueva Insignia!'
+                          : n.message.split(' ')[0]}
+                      </Text>
                     <Text fontSize="xs" color="gray.500">
                       {n.datareg
                         ? n.datareg.toDate().toLocaleString()
                         : 'Cargando fecha...'}
                     </Text>
                   </HStack>
-                  <Text fontSize="sm">{n.message.replace(/^\S+/, '').trim()}</Text>
+                  <Text fontSize="sm">{n.message.startsWith('!Has') ? n.message : n.message.replace(/^\S+/, '').trim()}</Text>
                 </Box>
               ))
             )}
