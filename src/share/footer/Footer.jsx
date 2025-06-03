@@ -12,6 +12,12 @@ const Footer = () => {
       </Text>
       
       <Flex justify={"center"} gap={2} mt={{ base: 1, md: 0 }}>
+      <Flex align="center" cursor="pointer" onClick={() => navigate('/howtouse')}
+          _hover={{ color: "teal.300" }} color="gray.300" fontSize="xs">
+          <LuInfo size={10 } />
+          <Text ml={1}>GUIA DE USO</Text>
+        </Flex>
+
         <Flex align="center" cursor="pointer" onClick={() => navigate('/aboutus')}
           _hover={{ color: "teal.300" }} color="gray.300" fontSize="xs">
           <LuInfo size={10 } />

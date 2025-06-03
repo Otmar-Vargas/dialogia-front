@@ -410,7 +410,7 @@ const NavTab = () => {
             right="0"
             top="0"
             h="100vh"
-            w={{ base: "100%", md: "20%" }}
+            w={{ base: "100%", md: "30%" }}
             bg="white"
             boxShadow="lg"
             zIndex="overlay"
@@ -430,7 +430,7 @@ const NavTab = () => {
           position="fixed"
           top="0"
           left="0"
-          w={{ base: "0", md: "80%" }} // En móviles no se muestra, en desktop cubre 80%
+          w={{ base: "0", md: "70%" }} // En móviles no se muestra, en desktop cubre 80%
           h="100vh"
           bg="blackAlpha.400"
           zIndex="overlay"
