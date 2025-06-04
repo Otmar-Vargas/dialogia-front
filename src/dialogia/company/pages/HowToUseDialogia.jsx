@@ -1,80 +1,108 @@
-import React, { useState } from "react";
-import { Box, Flex, Heading, Text, Image, Button, Link } from "@chakra-ui/react";
+import React from "react";
+import { Box, Flex, Heading, Text, Image, Link, Button } from "@chakra-ui/react";
 
 const HowToUseDialogia = () => {
-  const [videoWatched, setVideoWatched] = useState(false);
-
   return (
     <Box bg="white">
-      {/* Sección principal */}
-      <Flex
-        direction={{ base: "column", md: "row" }} 
-        minH="100vh"
-        gap={8}
-      >
+      <Flex direction={{ base: "column", md: "row" }} minH="100vh" gap={8}>
         {/* Contenido (izquierda) */}
         <Box flex={{ md: "3" }} width={{ base: "100%", md: "60%" }} px={{ base: 6, md: 16 }}>
-          <Box textAlign="center" mb={12}/>
 
-          <Heading size="3xl" mb={6} color="#444444" fontWeight="bold" textAlign="center">
-            Aprende a usar Dialogia
+          <Heading size="3xl" mb={6} color="#444444" fontWeight="bold" textAlign="center" mt={12}>
+            Domina Dialogia en 3 pasos
           </Heading>
 
-          <Text fontSize="md" mb={8} color="#676767" lineHeight="tall" textAlign="center">
-            Descubre cómo navegar, debatir y aprovechar al máximo la plataforma en menos de 5 minutos.
-          </Text>
+          {/* ----- 1. Login ----- */}
+          <Box mb={16}>
+            <Heading size="xl" mb={4} color="#444444">
+              Iniciar sesión y crear cuenta
+            </Heading>
+            <Text fontSize="md" mb={6} color="#676767" lineHeight="tall">
+              Solo toma 30 segundos. Te guiamos paso a paso para registrarte y acceder a todas las funcionalidades.
+            </Text>
 
-          {/* Video embebido (YouTube) */}
-          <Box 
-            mb={10} 
-            borderRadius="xl" 
-            overflow="hidden" 
-            boxShadow="lg"
-            position="relative"
-            paddingTop="56.25%" // 16:9 aspect ratio
-          >
-            <iframe
-              width="100%"
-              height="100%"
-              src="https://www.youtube.com/embed/3r5rQsoZ0iI?si=4NKmHVjTSrrzctnB" 
-              title="Tutorial Dialogia"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              style={{ position: "absolute", top: 0, left: 0 }}
-              onEnded={() => setVideoWatched(true)} // Activa feedback al terminar
-            />
+            <Box 
+              mb={10} 
+              borderRadius="xl" 
+              overflow="hidden" 
+              boxShadow="lg"
+              position="relative"
+              paddingTop="56.25%"
+            >
+              <iframe
+                width="100%"
+                height="100%"
+                src="https://www.youtube.com/embed/wBd57UveuSw" //
+                title="Registro en Dialogia"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                style={{ position: "absolute", top: 0, left: 0 }}
+              />
+            </Box>
           </Box>
 
-          {/* Feedback (solo visible después del video) */}
-          {videoWatched && (
-            <Box textAlign="center" mb={16}>
-              <Heading size="lg" mb={4} color="#444444">
-                ¿Te resultó útil este tutorial?
-              </Heading>
-              <Flex justify="center" gap={4}>
-                <Button 
-                  colorScheme="green" 
-                  size="lg" 
-                  onClick={() => alert("¡Gracias por tu feedback!")}
-                >
-                  Sí 👍
-                </Button>
-                <Button 
-                  colorScheme="red" 
-                  size="lg" 
-                  variant="outline"
-                  onClick={() => alert("Lo sentimos. ¿Qué podemos mejorar?")}
-                >
-                  No 👎
-                </Button>
-              </Flex>
-            </Box>
-          )}
+          {/* ----- 2. Debates ----- */}
+          <Box mb={16}>
+            <Heading size="xl" mb={4} color="#444444">
+              Crear debates y participar
+            </Heading>
+            <Text fontSize="md" mb={6} color="#676767" lineHeight="tall">
+              Aprende a iniciar un debate desde cero, comentar en discusiones existentes y conectar con otros usuarios. ¡Tu voz importa!
+            </Text>
 
-                  {/* Sección de Dudas */}
-          <Box 
-            p={8}
+            <Box 
+              mb={10} 
+              borderRadius="xl" 
+              overflow="hidden" 
+              boxShadow="lg"
+              position="relative"
+              paddingTop="56.25%"
+            >
+              <iframe
+                width="100%"
+                height="100%"
+                src="https://www.youtube.com/embed/-dV6nhyM_gI" // Reemplaza con el ID real
+                title="Cómo debatir en Dialogia"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                style={{ position: "absolute", top: 0, left: 0 }}
+              />
+            </Box>
+          </Box>
+
+          {/* ----- 3. Censura ----- */}
+          <Box mb={16}>
+            <Heading size="xl" mb={4} color="#444444">
+              Filtros de censura
+            </Heading>
+            <Text fontSize="md" mb={6} color="#676767" lineHeight="tall">
+              Dialogia te permite elegir qué contenido ver. Activa los filtros para evitar lenguaje ofensivo o desactívalos para debates sin límites. Tú decides.
+            </Text>
+
+            <Box 
+              mb={10} 
+              borderRadius="xl" 
+              overflow="hidden" 
+              boxShadow="lg"
+              position="relative"
+              paddingTop="56.25%"
+            >
+              <iframe
+                width="100%"
+                height="100%"
+                src="https://www.youtube.com/embed/vcP4nDS5HPk" 
+                title="Filtros de censura en Dialogia"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                style={{ position: "absolute", top: 0, left: 0 }}
+              />
+            </Box>
+          </Box>
+
+          <Box
             textAlign="center"
             mb={{ base: 8, md: 0 }}
           >
@@ -96,6 +124,7 @@ const HowToUseDialogia = () => {
               href="mailto:dialogiap.gmail.com"
               colorScheme="blue" 
               size="lg"
+              mb={8}
             >
               Contactar Soporte
             </Button>
@@ -106,7 +135,7 @@ const HowToUseDialogia = () => {
         {/* Imagen decorativa (derecha) */}
         <Box flex={{ md: "2" }} width={{ base: "100%", md: "40%" }}>
           <Image
-            src="howtouse.jpg" // Cambiar por una imagen relacionada (ej.: personas usando laptops)
+            src="howtouse.jpg"
             alt="Usando Dialogia"
             objectFit="cover"
             width="100%"
